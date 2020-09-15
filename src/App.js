@@ -1,13 +1,11 @@
 import React from "react";
 import "./App.css";
-import WeatherCard from "./components/WeatherCard/component";
+import WeatherEngine from "./components/WeatherEngine";
 
 function App() {
   return (
     <div className="App">
-      <WeatherCard temp={90} />
-      <WeatherCard temp={100} />
-      <WeatherCard temp={32} />
+      <WeatherEngine location="Sydney, AU" />
     </div>
   );
 }
