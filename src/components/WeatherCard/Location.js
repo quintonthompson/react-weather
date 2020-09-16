@@ -1,29 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
+import { motion } from "framer-motion";
 
 const Location = ({ city, country, getWeather }) => {
   const [query, setQuery] = useState("");
-  const [inputMode, setInputMode] = useState(true);
+  const [inputMode, setInputMode] = useState(false);
+  const inputRef = useRef("");
+
+  useEffect(() => {
+    if (inputMode) {
+      inputRef.current.focus();
+    }
+  }, [inputMode]);
 
   if (inputMode) {
     return (
       <Container>
-        <FormElement
-          onSubmit={(e) => {
-            e.preventDefault();
-            getWeather(query);
-          }}
-        >
-          <InputField
-            required
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <SearchButton type="submit">Search</SearchButton>
-          <CancelButton onClick={() => setInputMode(false)} type="submit">
-            x
-          </CancelButton>
-        </FormElement>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <FormElement
+            onSubmit={(e) => {
+              e.preventDefault();
+              getWeather(query);
+            }}
+          >
+            <InputField
+              ref={inputRef}
+              required
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <SearchButton type="submit">Search</SearchButton>
+            <CancelButton onClick={() => setInputMode(false)} type="submit">
+              X
+            </CancelButton>
+          </FormElement>
+        </motion.div>
       </Container>
     );
   }
@@ -38,15 +49,16 @@ const Location = ({ city, country, getWeather }) => {
 
 export default Location;
 const FormElement = styled.form`
-  background: blueviolet;
+  background: #778899;
   display: flex;
   position: relative;
   border-radius: 5px;
+  box-shadow: 1px 2px 2px rgb(0, 0, 0, 0.4);
 `;
 
 const InputField = styled.input`
   background: transparent;
-  padding: 4px;
+  padding: 5px;
   width: 80px;
   color: white;
   border: none;
@@ -56,19 +68,29 @@ const InputField = styled.input`
 `;
 
 const SearchButton = styled.button`
-  padding: 4px;
-  background: blue;
+  padding: 5px;
+  background: #2f4f4f;
   border: none;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: white;
+  box-shadow: 1px 1px 2px rgb(0, 0, 0, 0.4);
 `;
 
 const CancelButton = styled.span`
   position: absolute;
-  background: pink;
-  top: -8px;
-  right: -10px;
+  background: #808080;
+  top: -6px;
+  right: -8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.6rem;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: 1px 0px 2px rgb(0, 0, 0, 0.4);
 `;
 
 const Container = styled.div`
